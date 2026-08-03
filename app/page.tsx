@@ -23,7 +23,7 @@ function themeFor(name: string) {
 
 function useCountUp(target: number, active: boolean) {
   const [display, setDisplay] = useState(0);
-  const frameRef = useRef<number>();
+  const frameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!active) return;
