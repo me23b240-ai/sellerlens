@@ -6,6 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Sparkles, IndianRupee, Stethoscope, LogOut, ChevronDown } from 'lucide-react';
 import { db } from '@/lib/db';
 
+export const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const nav = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/optimizer', label: 'Optimizer', icon: Sparkles },
