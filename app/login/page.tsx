@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { db } from '@/lib/db';
+import { EASE_OUT } from '@/components/ui';
 
 export default function LoginPage() {
   const router = useRouter();
