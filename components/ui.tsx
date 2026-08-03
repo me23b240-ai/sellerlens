@@ -274,3 +274,14 @@ export function ScoreGauge({ score, size = 56 }: { score: number; size?: number 
     </div>
   );
 }
+
+export function ThreadDivider({ label }: { label?: string }) {
+  return (
+    <div className="my-8 flex items-center gap-3">
+      <div className="h-px flex-1 bg-gradient-to-r from-stone-200 via-stone-200 to-transparent" />
+      {label && <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-stone-400">{label}</span>}
+      <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-amber-400" />
+      <div className="h-px flex-1 bg-gradient-to-l from-stone-200 via-stone-200 to-transparent" />
+    </div>
+  );
+}
