@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, Loader2, Check } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Shell, PageHeader, Card, ScoreGauge, Button, EmptyState } from '@/components/ui';
+import { Shell, PageHeader, Card, ScoreGauge, Button, EmptyState, EASE_OUT } from '@/components/ui';
 
 export default function OptimizerPage() {
   return (

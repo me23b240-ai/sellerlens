@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { LayoutGrid, TrendingUp } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Shell, PageHeader, Card, ThreadDivider, ScoreGauge, Badge } from '@/components/ui';
+import { Shell, PageHeader, Card, ThreadDivider, ScoreGauge, Badge, EASE_OUT } from '@/components/ui';
 
 export default function CategoryManagerPage() {
   const [trends, setTrends] = useState<any[]>([]);

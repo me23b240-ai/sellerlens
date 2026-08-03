@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IndianRupee, Loader2, ArrowDown, ArrowUp, Check } from 'lucide-react';
-import { Shell, PageHeader, Card, Button, EmptyState } from '@/components/ui';
+import { Shell, PageHeader, Card, Button, EmptyState, EASE_OUT } from '@/components/ui';
 
 export default function PricingPage() {
   const [category, setCategory] = useState("Women's Ethnic Wear");

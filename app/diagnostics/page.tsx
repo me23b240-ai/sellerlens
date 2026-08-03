@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Stethoscope, ChevronDown, Loader2, AlertCircle, CheckCircle2, IndianRupee } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Shell, PageHeader, Card, Button, EmptyState, ScoreGauge } from '@/components/ui';
+import { Shell, PageHeader, Card, Button, EmptyState, ScoreGauge, EASE_OUT } from '@/components/ui';
 
 const container = {
   hidden: { opacity: 0 },
