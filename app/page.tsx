@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Package, Gauge, Zap, TrendingUp, ArrowUpRight, Sparkles, Stethoscope } from 'lucide-react';
 import { db } from '@/lib/db';
-import { Shell, PageHeader, Card, ScoreGauge, MetricCard, Badge, EmptyState, Button } from '@/components/ui';
+import { Shell, PageHeader, Card, ScoreGauge, MetricCard, Badge, EmptyState, Button, EASE_OUT } from '@/components/ui';
 
 interface Product { id: string; name: string; price: number; status: string; listing_score: number }
 
