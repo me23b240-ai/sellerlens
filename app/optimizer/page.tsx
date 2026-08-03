@@ -21,7 +21,7 @@ const container = {
 
 const chip = {
   hidden: { opacity: 0, scale: 0.85 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.25, ease: EASE_OUT } },
 };
 
 function OptimizerContent() {
@@ -87,7 +87,7 @@ function OptimizerContent() {
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
       >
         <PageHeader
           eyebrow="Fix My Listing"

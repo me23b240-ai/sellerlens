@@ -12,7 +12,7 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, x: -8 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: EASE_OUT } },
 };
 
 export default function DiagnosticsPage() {
@@ -35,7 +35,7 @@ export default function DiagnosticsPage() {
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
       >
         <PageHeader
           eyebrow="Why Not Selling"
@@ -104,7 +104,7 @@ export default function DiagnosticsPage() {
               key="result"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, ease: EASE_OUT }}
               className="grid grid-cols-1 lg:grid-cols-3 gap-6"
             >
               <Card className="lg:col-span-2">

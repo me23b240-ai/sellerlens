@@ -37,7 +37,7 @@ export default function LoginPage() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.4, ease: EASE_OUT }}
         className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-8 shadow-sm"
       >
         <div className="mb-8 flex items-center gap-2">
