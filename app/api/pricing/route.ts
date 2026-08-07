@@ -5,7 +5,7 @@ import { recommendPrice } from '@/lib/scoring';
 export async function POST(req: NextRequest) {
   const { category, currentPrice } = await req.json();
 
-  const { data } = await db
+  const { data } = await dbAdmin
     .from('marketplace_data')
     .select('price')
     .eq('category', category);
