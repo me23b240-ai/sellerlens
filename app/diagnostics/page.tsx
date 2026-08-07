@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Stethoscope, ChevronDown, Loader2, AlertCircle, CheckCircle2, IndianRupee } from 'lucide-react';
+import { Stethoscope, ChevronDown, Loader2, AlertCircle, CheckCircle2, IndianRupee, AlertTriangle } from 'lucide-react';
 import { db } from '@/lib/db';
 import { Shell, PageHeader, Card, Button, EmptyState, ScoreGauge, EASE_OUT } from '@/components/ui';
 
@@ -20,14 +20,27 @@ export default function DiagnosticsPage() {
   const [selected, setSelected] = useState('');
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => { db.from('products').select('id, name').then(({ data }) => setProducts(data || [])); }, []);
 
   async function diagnose() {
     setLoading(true);
-    const res = await fetch('/api/diagnose', { method: 'POST', body: JSON.stringify({ productId: selected }) });
-    setResult(await res.json());
-    setLoading(false);
+    setError('');
+    setResult(null);
+    try {
+      const res = await fetch('/api/diagnose', { method: 'POST', body: JSON.stringify({ productId: selected }) });
+      const raw = await res.text();
+      if (!raw) throw new Error('Something went wrong. Please try again.');
+      const data = JSON.parse(raw);
+      if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+      if (!data.rootCauses || !data.actions) throw new Error('We could not check this product right now. Please try again.');
+      setResult(data);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -54,7 +67,7 @@ export default function DiagnosticsPage() {
                 <select
                   className="input appearance-none pr-9 w-full"
                   value={selected}
-                  onChange={e => { setSelected(e.target.value); setResult(null); }}
+                  onChange={e => { setSelected(e.target.value); setResult(null); setError(''); }}
                 >
                   <option value="">Pick a product…</option>
                   {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -89,7 +102,19 @@ export default function DiagnosticsPage() {
             </motion.div>
           )}
 
-          {!loading && !result && (
+          {!loading && error && (
+            <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <div className="flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
+                <AlertTriangle size={18} className="mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-medium">Could not check this product</p>
+                  <p className="mt-0.5 text-rose-600/90">{error}</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {!loading && !error && !result && (
             <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <EmptyState
                 icon={Stethoscope}
@@ -99,7 +124,7 @@ export default function DiagnosticsPage() {
             </motion.div>
           )}
 
-          {!loading && result && (
+          {!loading && !error && result && (
             <motion.div
               key="result"
               initial={{ opacity: 0, y: 12 }}
@@ -115,7 +140,7 @@ export default function DiagnosticsPage() {
                   What's wrong
                 </h3>
                 <motion.ul variants={container} initial="hidden" animate="show" className="space-y-2">
-                  {result.rootCauses.map((c: string, i: number) => (
+                  {(result.rootCauses || []).map((c: string, i: number) => (
                     <motion.li key={i} variants={item} className="flex items-start gap-2.5 text-sm text-stone-600">
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
                       {c}
@@ -128,7 +153,7 @@ export default function DiagnosticsPage() {
                   What to do
                 </h3>
                 <motion.ul variants={container} initial="hidden" animate="show" className="flex flex-col gap-2">
-                  {result.actions.map((a: string, i: number) => (
+                  {(result.actions || []).map((a: string, i: number) => (
                     <motion.li
                       key={i}
                       variants={item}
@@ -147,13 +172,13 @@ export default function DiagnosticsPage() {
                 <div className="flex flex-col items-center justify-center gap-1 text-center">
                   <p className="text-xs font-medium uppercase tracking-wide text-stone-400">Listing quality</p>
                   <div className="my-3">
-                    <ScoreGauge score={result.listingScore} size={96} />
+                    <ScoreGauge score={result.listingScore ?? 0} size={96} />
                   </div>
                   <div className="mt-5 w-full border-t border-stone-100 pt-4">
                     <p className="text-xs font-medium uppercase tracking-wide text-stone-400">Best price</p>
                     <p className="mt-1.5 inline-flex items-center justify-center gap-0.5 font-mono text-xl font-semibold text-indigo-600">
                       <IndianRupee size={16} />
-                      {result.pricing.recommendedPrice ?? '—'}
+                      {result.pricing?.recommendedPrice ?? '—'}
                     </p>
                   </div>
                 </div>
