@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { dbAdmin } from '@/lib/db-admin';
 import { askAI } from '@/lib/ai';
 import { scoreListing, recommendPrice } from '@/lib/scoring';
 
 export async function POST(req: NextRequest) {
   const { productId } = await req.json();
 
-  const { data: product } = await db.from('products').select('*').eq('id', productId).single();
+  const { data: product } = await dbAdmin.from('products').select('*').eq('id', productId).single();
   if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
 
   const listingScore = scoreListing(product.original_title, product.description, product.attributes, product.category);
 
-  const { data: marketData } = await db.from('marketplace_data').select('price').eq('category', product.category);
+  const { data: marketData } = await dbAdmin.from('marketplace_data').select('price').eq('category', product.category);
   const pricing = recommendPrice((marketData || []).map(d => d.price), product.price);
 
-  const { data: trends } = await db.from('category_trends').select('*').eq('category', product.category).limit(3);
+  const { data: trends } = await dbAdmin.from('category_trends').select('*').eq('category', product.category).limit(3);
 
   const diagnosis = await askAI<{ summary: string; rootCauses: string[]; actions: string[] }>(`
 You are explaining to a small shop owner why their product isn't selling well. They may not know business or marketing words.

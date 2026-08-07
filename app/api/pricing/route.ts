@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { dbAdmin } from '@/lib/db-admin';
 import { recommendPrice } from '@/lib/scoring';
 
 export async function POST(req: NextRequest) {
